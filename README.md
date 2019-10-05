@@ -1,6 +1,6 @@
 # ts-practice
 
-velpert님의 TypeScript 강의 실습
+[velpert](https://velog.io/@velopert)님의 [TypeScript 강의](https://velog.io/@velopert/series/react-with-typescript) 실습
 
 ## 타입스크립트 기초 연습
 
