@@ -40,3 +40,27 @@ color = "green"; // 에러 발생!
 ```
 
 > 기본 타입에 대한 더 자세한 알아보기 [TypeScript-Handbook](https://typescript-kr.github.io/pages/Basic%20Types.html)
+
+## 함수에서 타입 정의하기
+
+```typescript
+function sum(x: number, y: number): number {
+  return x + y; // 숫자를 반환하지 않으면 에러 발생
+}
+
+sum(1, 2); // 함수의 파라미터로 숫자를 넣지 않으면 에러 발생
+```
+
+타입스크립트를 사용했을때 참 편리한 점은, 배열의 내장함수를 사용 할 때에도 타입 유추가 매우 잘 이루어진다는 것 입니다.
+
+![image](https://user-images.githubusercontent.com/42956032/66253529-bc38c280-e7a4-11e9-9ddc-d18b92b7dd6b.png)
+
+참고로 함수에서 만약 아무것도 반환하지 않아야 한다면 이를 반환 타입을 `void` 로 설정하면 됩니다.
+
+```typescript
+function returnNothing(): void {
+  console.log("I am just saying hello world");
+}
+```
+
+> 함수에 대하여 더 자세히 알아보기 [TypeScript-Handbook](https://typescript-kr.github.io/pages/Functions.html)
