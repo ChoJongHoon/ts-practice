@@ -64,3 +64,78 @@ function returnNothing(): void {
 ```
 
 > 함수에 대하여 더 자세히 알아보기 [TypeScript-Handbook](https://typescript-kr.github.io/pages/Functions.html)
+
+## interface 사용해보기
+
+`interface`는 클래스 또는 객체를 위한 타입을 지정 할 때 사용되는 문법입니다.
+
+### 클래스에서 interface 를 implements 하기
+
+```typescript
+// Shape 라는 interface 를 선언합니다.
+interface Shape {
+  getArea(): number; // Shape interface 에는 getArea 라는 함수가 꼭 있어야 하며 해당 함수의 반환값은 숫자입니다.
+}
+
+class Circle implements Shape {
+  // `implements` 키워드를 사용하여 해당 클래스가 Shape interface 의 조건을 충족하겠다는 것을 명시합니다.
+  constructor(public radius: number) {
+    this.radius = radius;
+  }
+
+  // 너비를 가져오는 함수를 구현합니다.
+  getArea() {
+    return this.radius * this.radius * Math.PI;
+  }
+}
+
+class Rectangle implements Shape {
+  constructor(private width: number, private height: number) {
+    this.width = width;
+    this.height = height;
+  }
+  getArea() {
+    return this.width * this.height;
+  }
+}
+
+const circle = new Circle(5);
+const rectangle = new Rectangle(10, 5);
+
+console.log(circle.radius); // 에러 없이 작동
+console.log(rectangle.width); // width 가 private 이기 때문에 에러 발생!
+
+const shapes: Shape[] = [new Circle(5), new Rectangle(10, 5)];
+
+shapes.forEach(shape => {
+  console.log(shape.getArea());
+});
+```
+
+### 일반 객체를 interface 로 타입 설정하기
+
+`interface`를 선언 할 때 다른 `interface`를 `extends`해서 상속받을 수 있습니다.
+
+```typescript
+interface Person {
+  name: string;
+  age?: number; // 물음표가 들어갔다는 것은, 설정을 해도 되고 안해도 되는 값이라는 것을 의미합니다.
+}
+interface Developer extends Person {
+  skills: string[];
+}
+
+const person: Person = {
+  name: "김사람",
+  age: 20
+};
+
+const expert: Developer = {
+  name: "김개발",
+  skills: ["javascript", "react"]
+};
+
+const people: Person[] = [person, expert];
+```
+
+> interface에 대한 더 자세한 내용 확인하기 [TypeScript-Handbook](https://typescript-kr.github.io/pages/Interfaces.html)
