@@ -2,7 +2,7 @@
 
 [velpert](https://velog.io/@velopert)님의 [TypeScript 강의](https://velog.io/@velopert/series/react-with-typescript) 실습
 
-## 타입스크립트 기초 연습
+# 타입스크립트 기초 연습
 
 `tsconfig.json`
 
@@ -139,3 +139,47 @@ const people: Person[] = [person, expert];
 ```
 
 > interface에 대한 더 자세한 내용 확인하기 [TypeScript-Handbook](https://typescript-kr.github.io/pages/Interfaces.html)
+
+## Type Alias 사용하기
+
+`type`은 특정 타입에 별칭을 붙이는 용도로 사용합니다. 이를 사용하여 객체를 위한 타입을 설정할 수도 있고, 배열, 또는 그 어떤 타입이던 별칭을 지어줄 수 있습니다.
+
+```typescript
+type Person = {
+  name: string;
+  age?: number; // 물음표가 들어갔다는 것은, 설정을 해도 되고 안해도 되는 값이라는 것을 의미합니다.
+};
+
+// & 는 Intersection 으로서 두개 이상의 타입들을 합쳐줍니다.
+// 참고: https://www.typescriptlang.org/docs/handbook/advanced-types.html#intersection-types
+type Developer = Person & {
+  skills: string[];
+};
+
+const person: Person = {
+  name: "김사람"
+};
+
+const expert: Developer = {
+  name: "김개발",
+  skills: ["javascript", "react"]
+};
+
+type People = Person[]; // Person[] 를 이제 앞으로 People 이라는 타입으로 사용 할 수 있습니다.
+const people: People = [person, expert];
+
+type Color = "red" | "orange" | "yellow";
+const color: Color = "red";
+const colors: Color[] = ["red", "orange"];
+```
+
+### `type`과 `interface`어떨 때 사용해야 할까?
+
+무엇이든 써도 상관 없는데 일관성 있게만 쓰면 됩니다.
+구버전의 타입스크립트에서는 `type`과 `interface`의 차이가 많이 존재했었는데 이제는 큰 차이는 없습니다.
+다만 라이브러리를 작성하거나 다른 라이브러리를 위한 타입 지원 파일을 작성하게 될 때는 `interface`를 사용하는것이 권장되고 있습니다.
+
+#### 관련글
+
+- [Interface vs Type alias in TypeScript 2.7](https://medium.com/@martin_hotell/interface-vs-type-alias-in-typescript-2-7-2a8f1777af4c)
+- [TypeScript에서 Type을 기술하는 두 가지 방법, Interface와 Type Alias](https://joonsungum.github.io/post/2019-02-25-typescript-interface-and-type-alias/)
