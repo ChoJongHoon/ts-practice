@@ -1,10 +1,29 @@
 "use strict";
-var person = {
-    name: "김사람",
-    age: 20
-};
-var expert = {
-    name: "김개발",
-    skills: ["javascript", "react"]
-};
-var people = [person, expert];
+var Queue = /** @class */ (function () {
+    function Queue() {
+        this.list = [];
+    }
+    Object.defineProperty(Queue.prototype, "length", {
+        get: function () {
+            return this.list.length;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Queue.prototype.enqueue = function (item) {
+        this.list.push(item);
+    };
+    Queue.prototype.dequeue = function () {
+        return this.list.shift();
+    };
+    return Queue;
+}());
+var queue = new Queue();
+queue.enqueue(0);
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3);
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());

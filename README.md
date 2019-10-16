@@ -6,7 +6,7 @@
 
 `tsconfig.json`
 
-- **target:** 컴파일된 코드가 어떤 환경에서 실행될 지 정의합니다. 예를들어서 화살표 함수를 사용하고 target 을 es5 로 한다면 일반 function 키워드를 사용하는 함수로 변환을 해줍니다. 하지만 이를 es6 로 설정한다면 화살표 함수를 그대로 유지해줍니다.
+- **target:** 컴파일된 코드가 어떤 환경에서 실행될 지 정의합니다. 예를들어서 화살표 함수를 사용하고 `target` 을 `es5` 로 한다면 일반 `function` 키워드를 사용하는 함수로 변환을 해줍니다. 하지만 이를 `es6` 로 설정한다면 화살표 함수를 그대로 유지해줍니다.
 - **module:** 컴파일된 코드가 어던 모듈 시스템을 사용할지 정의합니다. 예를 들어서 이 값을 **common** 으로 하면 `export default Sample` 을 하게 됐을 때 컴파일 된 코드에서는 `exports.default = helloWorld` 로 **변환**해주지만 이 값을 **es2015** 로 하면 `export default Sample` 을 그대로 **유지**하게 됩니다.
 - **strict:** 모든 타입 체킹 옵션을 활성화한다는 것을 의미합니다.
 - **esModuleInterop:** commonjs 모듈 형태로 이루어진 파일을 es2015 모듈 형태로 불러올 수 있게 해줍니다. [(참고)](https://stackoverflow.com/questions/56238356/understanding-esmoduleinterop-in-tsconfig-file)
@@ -183,3 +183,96 @@ const colors: Color[] = ["red", "orange"];
 
 - [Interface vs Type alias in TypeScript 2.7](https://medium.com/@martin_hotell/interface-vs-type-alias-in-typescript-2-7-2a8f1777af4c)
 - [TypeScript에서 Type을 기술하는 두 가지 방법, Interface와 Type Alias](https://joonsungum.github.io/post/2019-02-25-typescript-interface-and-type-alias/)
+
+## Generics
+
+제네릭(Generics)은 타입스크립트에서 함수, 클래스, `interface`, `type`을 사용하게 될 때 여러 종류의 타입에 대하여 호환을 맞춰야 하는 상황에서 사용하는 문법입니다.
+
+### 함수에서 Generics 사용하기
+
+```typescript
+function merge<A, B>(a: A, b: B): A & B {
+  return {
+    ...a,
+    ...b
+  };
+}
+
+const merged = merge({ foo: 1 }, { bar: 1 });
+```
+
+제네릭을 사용 할 때는 이렇게 `<T>`처럼 꺽쇠 안에 타입의 이름을 넣어서 사용하며, 이렇게 설정을 해주면 제네릭에 해당하는 타입에는 뭐든지 들어올 수 있게 되면서도, 사용 할 때 타입이 깨지지 않게 됩니다. 만약 함수에 이렇게 제네릭을 사용하게 된다면 함수의 파라미터로 넣은 실제 값의 타입을 활용하게 됩니다.
+
+```typescript
+function wrap<T>(param: T) {
+  return {
+    param
+  };
+}
+
+const wrapped = wrap(10);
+```
+
+이렇게 함수에서 제네릭을 사용하면 파라미터로 다양한 타입을 넣을 수도 있고 타입 지원을 지켜낼 수 있습니다.
+
+### interface 에서 Generics 사용하기
+
+```typescript
+interface Items<T> {
+  list: T[];
+}
+
+const items: Items<string> = {
+  list: ["a", "b", "c"]
+};
+```
+
+만약 `Items<string>`라는 타입을 사용하게 된다면, `Items`타입을 지닌 객체의 `list`배열은 `string[]`타입을 지니고 있게 됩니다. 이렇게 함으로써, `list`가 숫자 배열인 경우, 문자열 배열인 경우, 객체배열, 또는 그 어떤 배열인 경우에도 하나의 `interface`만을 사용하여 타입을 설정할 수 있습니다.
+
+### Type alias 에서 Generics 사용하기
+
+```typescript
+type Items<T> = {
+  list: T[];
+};
+
+const items: Items<string> = {
+  list: ["a", "b", "c"]
+};
+```
+
+### 클래스에서 Generics 사용하기
+
+Generics 를 사용하여 Queue를 구현해봅시다.
+
+```typescript
+class Queue<T> {
+  list: T[] = [];
+  get length() {
+    return this.list.length;
+  }
+
+  enqueue(item: T) {
+    this.list.push(item);
+  }
+
+  dequeue() {
+    return this.list.shift();
+  }
+}
+
+const queue = new Queue<number>();
+
+queue.enqueue(0);
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3);
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+```
+
+![image](https://user-images.githubusercontent.com/42956032/66895259-4dbdf500-f02d-11e9-82b3-51efb699f496.png)
+
+> Generic 에 대해서 더 자세히 알아보기[TypeScript-Handbook](https://typescript-kr.github.io/pages/Generics.html)
